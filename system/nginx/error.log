@@ -1,8 +1,0 @@
-2024/08/22 14:09:06 [error] 28#28: *1 directory index of "/var/www/bitrix/" is forbidden, client: 172.18.0.1, server: localsite, request: "GET / HTTP/1.1", host: "127.0.0.1:8080", referrer: "http://127.0.0.1:8080/login/?login=yes&backurl=%2F"
-2024/08/22 14:17:35 [error] 28#28: *2 directory index of "/var/www/bitrix/" is forbidden, client: 172.18.0.1, server: localsite, request: "GET / HTTP/1.1", host: "127.0.0.1:8080"
-2024/08/22 14:17:56 [error] 28#28: *2 directory index of "/var/www/bitrix/" is forbidden, client: 172.18.0.1, server: localsite, request: "GET / HTTP/1.1", host: "127.0.0.1:8080"
-2024/08/22 14:17:59 [error] 28#28: *3 directory index of "/var/www/bitrix/" is forbidden, client: 172.18.0.1, server: localsite, request: "GET / HTTP/1.1", host: "127.0.0.1:8080"
-2024/08/22 14:18:02 [error] 28#28: *3 connect() failed (113: No route to host) while connecting to upstream, client: 172.18.0.1, server: localsite, request: "GET /favicon.ico HTTP/1.1", upstream: "fastcgi://172.18.0.4:9000", host: "127.0.0.1:8080", referrer: "http://127.0.0.1:8080/"
-2024/08/22 14:20:43 [error] 28#28: *1 directory index of "/var/www/bitrix/" is forbidden, client: 172.18.0.1, server: localsite, request: "GET / HTTP/1.1", host: "127.0.0.1:8080"
-2024/08/22 14:20:57 [error] 28#28: *3 directory index of "/var/www/bitrix/" is forbidden, client: 172.18.0.1, server: localsite, request: "GET / HTTP/1.1", host: "127.0.0.1:8080"
-2024/08/22 14:26:40 [error] 28#28: *31 directory index of "/var/www/bitrix/" is forbidden, client: 172.18.0.1, server: localsite, request: "GET / HTTP/1.1", host: "127.0.0.1:8080"

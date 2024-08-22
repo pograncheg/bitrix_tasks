@@ -1,2 +1,0 @@
-[22-Aug-2024 17:23:55 Europe/Moscow] PHP Warning:  gzopen(/var/www/bitrix/business_encode.tar.gz): Failed to open stream: No such file or directory in /var/www/bitrix/bitrixsetup.php on line 2144
-[22-Aug-2024 17:23:55 Europe/Moscow] PHP Warning:  filesize(): stat failed for /var/www/bitrix/business_encode.tar.gz in /var/www/bitrix/bitrixsetup.php on line 2145
