@@ -1,0 +1,57 @@
+FROM php:8.0-fpm-alpine3.15 as build
+
+RUN \
+  apk update && apk upgrade && apk add --no-cache $PHPIZE_DEPS \
+  zlib-dev memcached-dev php7-pecl-memcached \ 
+  libmemcached-libs libmemcached zlib-dev libmemcached-dev cyrus-sasl-dev wget
+
+WORKDIR /tmp
+
+RUN \
+    wget https://pecl.php.net/get/memcached-3.1.5.tgz \
+    && tar zxvf memcached-3.1.5.tgz \
+    && ( \
+         cd /tmp/memcached-3.1.5 \
+        && /usr/local/bin/phpize /tmp/memcached-3.1.5   \
+        && ./configure && make -j$(nproc) && make install \
+        && docker-php-ext-enable memcached \
+    ) \
+    && rm memcached-3.1.5.tgz && rm -r memcached-3.1.5/
+
+RUN \
+  apk add --no-cache freetype-dev libjpeg-turbo-dev libpng-dev && \
+  docker-php-ext-configure gd --with-freetype --with-jpeg &&\
+  docker-php-ext-install -j$(($(nproc) + 2)) gd
+
+RUN \
+  apk add --no-cache bzip2-dev curl-dev libxml2-dev libzip-dev tidyhtml-dev libxslt-dev php7-iconv && \
+  docker-php-ext-install -j$(($(nproc) + 2)) bcmath bz2 calendar ctype curl dba \
+  mysqli opcache pcntl pdo pdo_mysql phar posix \
+  session shmop soap sockets sysvmsg sysvsem sysvshm tidy tokenizer \
+  xml xmlwriter xsl zip #xmlrpc iconv
+
+FROM build as bitrix
+COPY conf.d/php.ini /usr/local/etc/php/conf.d/php.ini
+COPY conf.d/fpm.conf /usr/local/etc/php-fpm.d/www.conf
+
+RUN \
+  mkdir /var/www/bitrix && chown www-data: /var/www/bitrix && \
+  mkdir /var/www/log/ && touch /var/www/log/php-error.log && \
+  touch /var/www/log/fpm-access.log && \
+  chown www-data: /var/www/log/
+  
+RUN apk add shadow
+
+RUN addgroup -g 2000 node \
+    && adduser -u 2000 -G node -s /bin/sh -D node
+
+ARG UID=1000
+ARG GID=1000
+ENV UID=${UID}
+ENV GID=${GID}
+RUN usermod -u $UID node \
+  && groupmod -g $GID node
+
+USER node
+
+WORKDIR /var/www/bitrix
