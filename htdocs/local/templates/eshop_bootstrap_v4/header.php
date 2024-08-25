@@ -15,6 +15,7 @@ $curPage = $APPLICATION->GetCurPage(true);
 ?><!DOCTYPE html>
 <html xml:lang="<?=LANGUAGE_ID?>" lang="<?=LANGUAGE_ID?>">
 <head>
+	<meta property= "specialdate" content="<?$APPLICATION->ShowProperty("specialdate")?>">,
 	<title><?$APPLICATION->ShowTitle()?></title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width">
