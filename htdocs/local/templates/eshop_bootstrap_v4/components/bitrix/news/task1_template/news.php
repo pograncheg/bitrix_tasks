@@ -67,7 +67,7 @@ endif;
 
 $APPLICATION->IncludeComponent(
 	"bitrix:news.list",
-	"bootstrap_v4",
+	"task1_template",
 	[
 		"IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
 		"IBLOCK_ID" => $arParams["IBLOCK_ID"],
@@ -143,6 +143,7 @@ $APPLICATION->IncludeComponent(
 		"SHARE_SHORTEN_URL_KEY" => $arParams["SHARE_SHORTEN_URL_KEY"],
 
 		"TEMPLATE_THEME" => ($arParams["TEMPLATE_THEME"] ?? ''),
+		"SPECIALDATE" => ($arParams["SPECIALDATE"] ?? ''),
 	],
 	$component,
 	['HIDE_ICONS' => 'Y']
