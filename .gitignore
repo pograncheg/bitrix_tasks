@@ -1,4 +1,8 @@
 /htdocs/bitrix/
+!/htdocs/bitrix/templates/
+!/htdocs/bitrix/components/
+!/htdocs/bitrix/php_interface/
+!/htdocs/bitrix/modules/
 /dbdata/
 /system/
 images
