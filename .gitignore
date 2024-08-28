@@ -1,4 +1,6 @@
 /htdocs/bitrix/
+!/bitrix/.settings_extra.php
+/htdocs/upload/
 /dbdata/
 /system/
 images
