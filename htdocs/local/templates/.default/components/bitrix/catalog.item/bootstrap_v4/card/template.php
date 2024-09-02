@@ -25,6 +25,9 @@ use \Bitrix\Main\Localization\Loc;
  */
 ?>
 <div class="product-item">
+	<?foreach ($arResult['LABELS'] as $labelName => $labelInfo):?>
+		<a href="<?=$labelInfo['UF_LINK']?>" style="text-decoration:none;background-color:rgb(<?=$labelInfo['UF_LABEL_COLOR']?>);display:inline-block;padding:4px 8px; border-radius:5px;color:aliceblue;font-size:0.8em;margin-top:2px;"><?=$labelInfo['UF_NAME']?></a>
+	<?endforeach ?>
 	<? if ($itemHasDetailUrl): ?>
 	<a class="product-item-image-wrapper" href="<?=$item['DETAIL_PAGE_URL']?>" title="<?=$imgTitle?>"
 		data-entity="image-wrapper">
