@@ -3,15 +3,17 @@
 namespace Custom\Components;
 
 use Bitrix\Main\Error;
-use Bitrix\Main\Exceptions;
+use Bitrix\Main\ArgumentException;
 use Bitrix\Main\Errorable;
 use Bitrix\Main\ErrorCollection;
-use Bitrix\Main\Engine\ActionFilter;
 use Bitrix\Main\Engine\Contract\Controllerable;
 use CBitrixComponent;
 use \Bitrix\Main\Context;
 use Bitrix\Main\Mail\Event;
-use Custom\Validator\FeedbackValidator;
+// use Custom\Validator\FeedbackValidator;
+use Custom\Filters\ValidateFormFilter;
+
+if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
 class FeedbackComponent extends CBitrixComponent implements Controllerable, Errorable
 {
@@ -38,20 +40,17 @@ class FeedbackComponent extends CBitrixComponent implements Controllerable, Erro
 		return [
 			'sendMessage' => [ 	
 				'prefilters' => [
-					new ActionFilter\HttpMethod([
-						ActionFilter\HttpMethod::METHOD_POST
-					])
+					new ValidateFormFilter(),
 				],
 			],
 		];
 	}
 	
-	public function sendMessageAction()	: array
+	public function sendMessageAction(): array
 	{
 		\Bitrix\Main\Loader::includeModule('iblock');
 		define('IBLOCK_ID', 4);
-		$messFileFormats = ['jpeg', 'jpg', 'png', 'webp'];
-		$validator = new FeedbackValidator;
+
 		try {
 			$request = Context::getCurrent()->getRequest();
 			$name = htmlspecialcharsEx(trim($request->get('name')));
@@ -64,21 +63,7 @@ class FeedbackComponent extends CBitrixComponent implements Controllerable, Erro
 				$tmpPath = $messFile['tmp_name'];
 				$fileName = $messFile['name'];
 				$type = $messFile['type'];
-				// $messFilePath = __DIR__ . '/images/' . str_replace('/tmp/', '', $messFile['tmp_name']) . '_' . $messFile['name'];
-				$validator->validate('messFile', $messFile['name'], ['format' => $messFileFormats]);
 			}
-			$validator->validate('name', $name, ['required' => true, 'min' => 2]);
-			$validator->validate('surname', $surname, ['required' => true, 'min' => 2]);
-			$validator->validate('department', $department, ['required' => true]);
-			$validator->validate('message', $message, ['required' => true, 'min' => 10]);
-
-			$errors = $validator->getErrors();
-			if ($errors) {
-				return [
-					"result" => false,
-					"errors" => $errors
-				];
-			} 
 
 			if ($tmpPath) {
 				$fileID = \CFile::SaveFile(array(
@@ -89,9 +74,13 @@ class FeedbackComponent extends CBitrixComponent implements Controllerable, Erro
 				), 'iblock');
 
 				if (!$fileID) {
-					return [
-						"result" => 'Ошибка загрузки файла'
-					];
+
+					$this->errorCollection[] = new Error(
+						"Ошибка загрузки файла. Попробуйте еще раз.",
+						"ERROR_DOWNLOAD_FILE",
+						['field' => 'messFile']
+					);
+
 				}
 			}
 
@@ -125,15 +114,21 @@ class FeedbackComponent extends CBitrixComponent implements Controllerable, Erro
 				"FILE" => [$fileID]
 			));
 			// -------------------
-
-			return [
-				"result" => true,
-				"message" => "Ваше сообщение отправлено!"
-			];
-		} catch (\Exception $e) {
+		} catch (ArgumentException $e) {
 			$this->errorCollection[] = new Error($e->getMessage());
 			return [
 				"result" => 'Произошла ошибка',
+			];
+		}
+		if ($errors = $this->getErrors()) {
+			return [
+				"result" => false,
+				'errors' => $errors
+			];
+		} else {
+			return [
+				"result" => true,
+				"message" => 'Сообщение успешно отправлено'
 			];
 		}
 	

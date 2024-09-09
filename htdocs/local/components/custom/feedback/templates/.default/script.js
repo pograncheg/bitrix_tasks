@@ -20,32 +20,21 @@ BX.ready(function(){
             mode: 'class',
             data: formData
         }).then(function(response) {
-        if (response.status === 'success') {
-            let result = response.data.result;
-            if(result === false) {
-                let errors = response.data.errors;
-                for (field in errors) {
-                    let errorContainer = BX(`${field}-error`);
-                    let HtmlText = errors[field].map(function(error){
-                        return `<p>${error}</p>`
-                    }).join('');
-                    // errorContainer.innerHtml = HtmlText;
-                    BX.adjust(errorContainer, {html: HtmlText});
-                }
-            } else if(result === true) {
-                form.reset();
-                let message = response.data.message;
-                let succ = BX.style(BX.create('p', {text: message, class: 'ui-ctl'}), 'color', 'green')
-                BX.append(succ,form);
+            if(response.data.result === true){
+                $("#formResult").append(`<p>${response.data.message}</p>`);
+                form.reset();      
             } else {
-                let result = response.data.result;
-                let succ = BX.style(BX.create('p', {text: result, class: 'ui-ctl'}), 'color', 'red')
-                BX.append(succ,form);
+                $("#formResult").append(`<p style='color:red;'>Произошла ошибка!</p>`);
             }
-        } else {
-                let succ = BX.style(BX.create('p', {text: 'Ошибка отправки формы.', class: 'ui-ctl'}), 'color', 'red')
-                BX.append(succ,form);
-        }
-        });
+        }, function(response) {
+            console.log(response.errors);
+            errors = response.errors;
+            errors.forEach(function(error){
+                // console.log(error.customData);
+                fieldname = error.customData.field;
+                errorMess = error.message;
+                $("#" + fieldname).next().append(`<p>${errorMess}</p>`);
+            })
+        })
     });
 })

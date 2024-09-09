@@ -45,13 +45,14 @@
                 <span><?=GetMessage("CUSTOM_FEEDBACK_MESSAGE_FILE")?></span>
                 <small><?=GetMessage("CUSTOM_FEEDBACK_MESSAGE_FILE_DRAG_AND_DROP")?></small>
             </div>
-	        <input type="file" class="ui-ctl-element" name="messFile">
+	        <input type="file" class="ui-ctl-element" name="messFile" id="messFile">
             <div id="messFile-error" style="color:red;" class="fieldError"></div>
         </label>
 
         <div class="ui-ctl">
             <input type="submit" name="submit"  value="<?=GetMessage("CUSTOM_FEEDBACK_SUBMIT")?>" class="ui-btn">
         </div>
+        <div id='formResult' style='color:green;'></div>
     </form>
 </div>
 
