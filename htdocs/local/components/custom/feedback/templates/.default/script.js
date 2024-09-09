@@ -20,20 +20,22 @@ BX.ready(function(){
             mode: 'class',
             data: formData
         }).then(function(response) {
-            if(response.data.result === true){
-                $("#formResult").append(`<p>${response.data.message}</p>`);
+            // console.log(response);
+            if(successMessage = response.data?.html){
+                $("#formResult").append(successMessage);
                 form.reset();      
             } else {
                 $("#formResult").append(`<p style='color:red;'>Произошла ошибка!</p>`);
             }
         }, function(response) {
-            console.log(response.errors);
             errors = response.errors;
             errors.forEach(function(error){
                 // console.log(error.customData);
-                fieldname = error.customData.field;
-                errorMess = error.message;
-                $("#" + fieldname).next().append(`<p>${errorMess}</p>`);
+                if (error.customData) {
+                    fieldname = error.customData.field;
+                    errorMess = error.message;
+                    $("#" + fieldname).next().append(`<p>${errorMess}</p>`);
+                }
             })
         })
     });

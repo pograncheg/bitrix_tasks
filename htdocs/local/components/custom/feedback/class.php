@@ -12,6 +12,7 @@ use \Bitrix\Main\Context;
 use Bitrix\Main\Mail\Event;
 // use Custom\Validator\FeedbackValidator;
 use Custom\Filters\ValidateFormFilter;
+use \Bitrix\Main\Engine\Response\Component;
 
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
@@ -46,7 +47,7 @@ class FeedbackComponent extends CBitrixComponent implements Controllerable, Erro
 		];
 	}
 	
-	public function sendMessageAction(): array
+	public function sendMessageAction()
 	{
 		\Bitrix\Main\Loader::includeModule('iblock');
 		define('IBLOCK_ID', 4);
@@ -126,10 +127,9 @@ class FeedbackComponent extends CBitrixComponent implements Controllerable, Erro
 				'errors' => $errors
 			];
 		} else {
-			return [
-				"result" => true,
-				"message" => 'Сообщение успешно отправлено'
-			];
+
+			return new Component('custom:feedback.message', '', []);
+
 		}
 	
 	}
