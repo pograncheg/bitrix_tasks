@@ -16,9 +16,8 @@ class Orders
             die('Модуль sale не загружен.');
         }
 
-
         $lastId = Option::get('getOrdersInXml', 'last_result') ?? 0; //получаем ID последнего выгруженного заказа
-        var_dump($lastId);
+
         $orderList = Order::getList([
             // 'select' => ['ID', 'DATE_INSERT', 'PRICE', 'STATUS_ID', 'USER_ID'], 
             'select' => ['*'],
@@ -34,13 +33,10 @@ class Orders
         // Начинаем создание XML-документа
         $xml->startDocument('1.0', 'UTF-8');
         $xml->startElement('orders');
-
-        // Добавляем элементы с переносами строк
         while ($order = $orderList->fetch()) {
             if ($order['ID'] > $lastId) {
                 $lastId = $order['ID'];
             }
-            // echo '<pre>'; print_r($order); echo '</pre>';
             $odjOrder = Order::load($order['ID']);
             $xml->startElement('order');
             $xml->writeAttribute('id', $order['ID']);
@@ -67,14 +63,11 @@ class Orders
             $xml->endElement(); // Закрываем элемент orderProperties
             $xml->endElement(); // Закрываем элемент properties
             $xml->startElement('basketItems');
-            
 
             $basket = $odjOrder->getBasket();
-            // echo '<pre>'; print_r($basket); echo '</pre>';
+
             foreach ($basket as $basketItem) {
                 $xml->startElement('basketItem');
-                // echo '<pre>'; print_r($basketItem); echo '</pre>';
-                // Получение информации о каждом товаре
                 $xml->writeElement('productId', $basketItem->getProductId());
                 $xml->writeElement('name', $basketItem->getField('NAME'));
                 $xml->writeElement('price', $basketItem->getPrice());
