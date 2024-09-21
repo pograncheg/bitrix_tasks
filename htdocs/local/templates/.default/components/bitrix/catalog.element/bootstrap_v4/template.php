@@ -710,6 +710,22 @@ $themeClass = isset($arParams['TEMPLATE_THEME']) ? ' bx-' . $arParams['TEMPLATE_
 					}
 					?>
 				</div>
+				<!-- Кнопка купить в один клик-->
+				<div class="mb-3">
+					<?php
+					// print_r($arResult);
+					// echo '<pre>'; print_r($arResult); echo '</pre>';
+					$APPLICATION->IncludeComponent(
+						'trainee:buyOneClick',
+						'',
+						array(
+							'PRODUCT_ID' => $arResult['ID'],
+						),
+						$component,
+					);
+					?>
+				</div>
+				<!-- ----------- -->
 			</div>
 		</div>
 	</div>

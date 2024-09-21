@@ -168,6 +168,21 @@ if (empty($arResult['ERROR_MESSAGE'])) {
 		<?
 		}
 		?>
+		
+		<!-- Кнопка купить в один клик-->
+		<div class="mb-3">
+			<?php
+			$APPLICATION->IncludeComponent(
+				'trainee:buyOneClick',
+				'',
+				array(
+					'PRODUCT_ID' => $arResult['ID'],
+				),
+				$component,
+			);
+			?>
+		</div>
+		<!-- ------------------------ -->
 
 		<div class="row">
 			<div class="col">
