@@ -37,3 +37,24 @@ else
 
 $arParams["FILTER_VIEW_MODE"] = (isset($arParams["FILTER_VIEW_MODE"]) && toUpper($arParams["FILTER_VIEW_MODE"]) == "HORIZONTAL") ? "HORIZONTAL" : "VERTICAL";
 $arParams["POPUP_POSITION"] = (isset($arParams["POPUP_POSITION"]) && in_array($arParams["POPUP_POSITION"], array("left", "right"))) ? $arParams["POPUP_POSITION"] : "left";
+
+$items = $arResult['ITEMS'];
+
+$resultStr = '';
+foreach ($items as $id => $item) {
+	$index = 0;
+	foreach ($item['VALUES'] as $value) {
+		if ($value['CHECKED']) {
+			if ($index == 0) {
+				$resultStr .= ". {$item['NAME']} - ";
+				$resultStr .= $value['VALUE'];
+			} else {
+				$resultStr .= ", {$value['VALUE']}";
+			}
+			$index++;
+		}
+	}
+}
+
+$this->__component->SetResultCacheKeys(array("STR_FOR_TITLE"));
+$arResult["STR_FOR_TITLE"] = $resultStr;

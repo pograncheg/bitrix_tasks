@@ -78,3 +78,10 @@ else
 {
 	include($_SERVER["DOCUMENT_ROOT"] . "/" . $this->GetFolder() . "/section_horizontal.php");
 }
+
+$currentTitle = $APPLICATION->GetPageProperty('title');
+$currentH1 = $APPLICATION->GetTitle();
+$newH1 = $currentH1 . $arResult["STR_FOR_TITLE"];
+$newTitle = $currentTitle . $arResult["STR_FOR_TITLE"];
+$APPLICATION->SetPageProperty('title', $newTitle);
+$APPLICATION->SetTitle($newH1);

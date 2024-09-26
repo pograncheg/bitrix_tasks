@@ -3,4 +3,8 @@
 /** @var @global CMain $APPLICATION */
 
 CJSCore::Init(array('fx', 'popup', 'ui.fonts.opensans'));
+if($this->__parent->arResult) {
+    $this->__parent->arResult["STR_FOR_TITLE"] = $arResult["STR_FOR_TITLE"];
+}
 ?>
+
